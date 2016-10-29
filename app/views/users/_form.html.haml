@@ -1,0 +1,27 @@
+= form_for @user do |f|
+  = render 'shared/error_messages', object: f.object
+  = field_set_tag t('shop.users.user_details') do
+    .splitContainer
+      %dl.half
+        %dt= f.label :first_name, t('shop.users.first_name')
+        %dd= f.text_field :first_name, :class => 'focus text'
+      %dl.half
+        %dt= f.label :last_name, t('shop.users.last_name')
+        %dd= f.text_field :last_name, :class => 'text'
+  = field_set_tag t("shop.users.login") do
+    .splitContainer
+      %dl.third
+        %dt= f.label :email_address, t('shop.users.email')
+        %dd= f.text_field :email_address, :class => 'text'
+      %dl.third
+        %dt= f.label :password, t('shop.users.password')
+        %dd= f.password_field :password, :class => 'text'
+      %dl.third
+        %dt= f.label :password_confirmation, t('shop.users.password_confirmation')
+        %dd= f.password_field :password_confirmation, :class => 'text'
+
+  %p.submit
+    - unless @user.new_record?
+      %span.right= link_to t('shop.delete'), @user, :class => 'button purple', :method => :delete, :data => {:confirm => t('shop.users.delete_confirmation')}
+    = f.submit  t('shop.submit'), :class => 'button green'
+    = link_to t('shop.cancel'), :users, :class => 'button'

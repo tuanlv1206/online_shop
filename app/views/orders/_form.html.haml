@@ -1,0 +1,58 @@
+= field_set_tag t('shop.orders.billing_address') do
+  %dl
+    %dt= f.label :customer_id, t('shop.orders.customer')
+    %dd= f.collection_select :customer_id, Customer.ordered, :id, :name, {:include_blank => true}, {:data => {:placeholder => t('shop.orders.select_customer')}}
+  .splitContainer
+    %dl.third
+      %dt= f.label :first_name, t('shop.orders.first_name')
+      %dd= f.text_field :first_name, :class => 'focus text'
+    %dl.third
+      %dt= f.label :last_name, t('shop.orders.last_name')
+      %dd= f.text_field :last_name, :class => 'text'
+    %dl.third
+      %dt= f.label :company, t('shop.orders.company')
+      %dd= f.text_field :company, :class => 'text'
+  %dl
+    %dt= f.label :billing_address1, t('shop.orders.address')
+    %dd.space= f.text_field :billing_address1, :class => 'text'
+    %dd.space= f.text_field :billing_address2, :class => 'text'
+    %dd.space= f.text_field :billing_address3, :class => 'text'
+    %dd.space= f.text_field :billing_address4, :class => 'text'
+  .splitContainer
+    %dl.half
+      %dt= f.label :billing_postcode, t('shop.orders.post_code')
+      %dd= f.text_field :billing_postcode, :class => 'text'
+    %dl.half
+      %dt= f.label :billing_country_id, t('shop.orders.country')
+      %dd= f.collection_select :billing_country_id, Country.ordered, :id, :name, {:include_blank => true}, {:data => {:placeholder => t('shop.orders.select_country')}}
+
+  .splitContainer
+    %dl.third
+      %dt= f.label :email_address, t('shop.orders.email_address')
+      %dd= f.text_field :email_address, :class => 'text'
+    %dl.third
+      %dt= f.label :phone_number, t('shop.orders.phone_number')
+      %dd= f.text_field :phone_number, :class => 'text'
+    %dl.third
+      %dt= f.label :separate_delivery_address, t('shop.orders.separate_delivery_address')
+      %dd.checkbox
+        = f.check_box :separate_delivery_address
+        = f.label :separate_delivery_address, t('shop.orders.use_separate_delivery_address?')
+
+= field_set_tag t('shop.orders.delivery_address'), :class => 'delivery' do
+  %dl
+    %dt= f.label :delivery_name, t('shop.orders.delivery_name')
+    %dd= f.text_field :delivery_name, :class => 'text'
+  %dl
+    %dt= f.label :delivery_address1, t('shop.orders.address')
+    %dd.space= f.text_field :delivery_address1, :class => 'text'
+    %dd.space= f.text_field :delivery_address2, :class => 'text'
+    %dd.space= f.text_field :delivery_address3, :class => 'text'
+    %dd.space= f.text_field :delivery_address4, :class => 'text'
+  .splitContainer
+    %dl.half
+      %dt= f.label :delivery_postcode, t('shop.orders.post_code')
+      %dd= f.text_field :delivery_postcode, :class => 'text'
+    %dl.half
+      %dt= f.label :delivery_country_id, t('shop.orders.country')
+      %dd= f.collection_select :delivery_country_id, Country.ordered, :id, :name, {:include_blank => true}, {:data => {:placeholder => t('shop.orders.select_country')}}

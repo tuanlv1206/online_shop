@@ -1,0 +1,27 @@
+- @page_title = t('shop.delivery_services.delivery_services')
+
+= content_for :header do
+  %p.buttons= link_to t('shop.delivery_services.new'), :new_delivery_service, class: 'button green'
+  %h2.delivery_services= t('shop.delivery_services.delivery_services')
+
+.table
+  %table.data
+    %thead
+      %tr
+        %th= t('shop.delivery_services.name')
+        %th= t('shop.delivery_services.prices')
+        %th= t('shop.delivery_services.courier')
+        %th= t('shop.delivery_services.active?')
+        %th= t('shop.delivery_services.default?')
+    %tbody
+      - if @delivery_services.empty?
+        %tr.empty
+          %td{colspan: 5}= t('shop.delivery_services.no_services')
+      - else
+        - for delivery_service in @delivery_services
+          %tr
+            %td= link_to delivery_service.name, [:edit, delivery_service]
+            %td= link_to t('shop.delivery_services.set_prices'), [delivery_service, :delivery_service_prices]
+            %td= delivery_service.courier
+            %td= boolean_tag delivery_service.active?
+            %td= boolean_tag delivery_service.default?

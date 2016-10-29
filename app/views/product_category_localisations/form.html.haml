@@ -1,0 +1,29 @@
+- @page_title = "#{t('shop.localisations.localisations')} - #{@product_category.name}"
+= content_for :header do
+  %p.buttons= link_to t('shop.localisations.back_to_localisations'), [@product_category, :localisations], :class => 'button'
+  %h2.products= t('shop.localisations.localisations_of', name: @product_category.name)
+
+- loc = @localisation.new_record? ? :en : @localisation.locale.to_sym
+- Globalize.with_locale(loc) do
+  = form_for [@product_category, @localisation], :url => @localisation.new_record? ? product_category_localisations_path(@product_category) : product_category_localisation_path(@product_category, @localisation), :html => {:multipart => true} do |f|
+    = render 'shared/error_messages', object: f.object
+
+    = field_set_tag t('shop.product_category.category_details') do
+      .splitContainer
+        %dl.half
+          %dt= f.label :name, t('shop.product_category.name')
+          %dd= f.text_field :name, :class => 'focus text'
+        %dl.half
+          %dt= f.label :locale
+          %dd= f.select :locale, I18n.available_locales, {selected: @localisation.locale || params[:locale_field]}, {class: "chosen"}
+      %dl
+        %dt= f.label :permalink, t('shop.product_category.permalink')
+        %dd= f.text_field :permalink, :class => 'text'
+      %dl.cleared
+        %dt= f.label :description, t('shop.product_category.description')
+        %dd= f.text_area :description, :class => 'text'
+
+    %p.submit
+      - unless @localisation.new_record?
+        %span.right= link_to t('shop.delete'), product_category_localisation_path(@product_category, @localisation), :class => 'button purple', :method => :delete, :data => {:confirm => t('shop.localisations.delete_confirmation')}
+      = f.submit t('shop.localisations.save_localisation'), :class => 'button green'

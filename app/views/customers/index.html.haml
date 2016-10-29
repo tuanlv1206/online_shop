@@ -1,0 +1,32 @@
+- @page_title = t('shop.customers.customers')
+
+= content_for :header do
+  %p.buttons
+    = link_to t('shop.customers.new_customer'), :new_customer, class: 'button green'
+    = link_to t('shop.customers.search_customer'), '#', class: 'button', rel: 'searchCustomers'
+  %h2.users= t('shop.customers.customers')
+
+= render 'search_form'
+
+.table
+  %table.data
+    %thead
+      %tr
+        %th= t('shop.customers.name')
+        %th= t('shop.customers.company')
+        %th= t('shop.customers.email')
+        %th= t('shop.customers.phone')
+        %th= t('shop.customers.mobile_phone')
+    %tbody
+      - if @customers.empty?
+        %tr.empty
+          %td{colspan: 5}= t('shop.customers.no_customers')
+      - else
+        - for customer in @customers
+          %tr
+            %td= link_to customer.full_name, customer
+            %td= link_to customer.company, customer
+            %td= customer.email
+            %td= customer.phone
+            %td= customer.mobile
+= paginate @customers

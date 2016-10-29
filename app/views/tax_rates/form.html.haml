@@ -1,0 +1,28 @@
+- @page_title = t('shop.tax_rates.tax_rates')
+= content_for :header do
+  %p.buttons= link_to t('shop.tax_rates.back_to_tax_rates'), :tax_rates, :class => 'button grey'
+  %h2.tax_rates= t('shop.tax_rates.tax_rates')
+
+= form_for @tax_rate do |f|
+  = render 'shared/error_messages', object: f.object
+  = field_set_tag t('shop.tax_rates.rate_details') do
+    .splitContainer
+      %dl.half
+        %dt= f.label :name, t('shop.tax_rates.name')
+        %dd= f.text_field :name, :class => 'focus text', :required => true
+      %dl.half
+        %dt= f.label :rate, t('shop.tax_rates.rate')
+        %dd= f.text_field :rate, :class => 'text', :required => true
+
+  = field_set_tag t('shop.tax_rates.country_restriction') do
+    %dl
+      %dd
+        = f.select :address_type, TaxRate::ADDRESS_TYPES.map { |a| [t('shop.tax_rates.address_type_option', address: t('shop.tax_rates.#{a}')).html_safe, a]}, {}, :class => 'chosen-basic'
+    %dl
+      %dd
+        = f.collection_select :country_ids, Country.ordered, :id, :name, {}, {:class => 'chosen', :multiple => true, :data =>{:placeholder => t('shop.tax_rates.all_countries')}}
+  %p.submit
+    - unless @tax_rate.new_record?
+      %span.right= link_to t('shop.delete'), @tax_rate, :class => 'button purple', :method => :delete, :data => {:confirm => t('shop.tax_rates.delete_confirmation')}
+    = f.submit t('shop.submit'), :class => 'button green'
+    = link_to t('shop.cancel'), :tax_rates, :class => 'button'

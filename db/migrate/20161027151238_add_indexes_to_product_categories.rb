@@ -1,0 +1,5 @@
+class AddIndexesToProductCategories < ActiveRecord::Migration[5.0]
+  def change
+    add_index :product_categories, :permalink
+  end
+end

@@ -1,0 +1,37 @@
+- unless @payments.empty?
+  .table
+    %table.data
+      %thead
+        %tr
+          %th= t('shop.orders.id')
+          %th= t('shop.orders.type')
+          %th= t('shop.orders.method')
+          %th= t('shop.orders.reference')
+          %th= t('shop.orders.amount')
+          %th= t('shop.orders.refunded?')
+          %th
+      %tbody
+        - for payment in @payments
+          %tr
+            %td= payment.id
+            %td
+              = payment.refund? ? t('shop.orders.refund') : t('shop.orders.payment')
+              %span.float-right= boolean_tag payment.confirmed?
+            %td= payment.method
+            %td= link_to_if payment.transaction_url, payment.reference, payment.transaction_url
+
+            - if payment.refund?
+              %td{:colspan => 2}
+                %b= number_to_currency payment.amount
+                - if payment.parent_payment_id
+                  #{t('shop.orders.from_payment')} ##{payment.parent_payment_id}
+            - else
+              %td= number_to_currency payment.amount
+              %td= boolean_tag payment.refunded?, nil, :true_text => number_to_currency(payment.amount_refunded)
+            %td.refund
+              - if payment.refundable?
+                = link_to t('shop.orders.refund'), [:refund, @order, payment], :class => 'button purple button-mini', :rel => 'dialog'
+              - else
+                = link_to t('shop.delete'), [@order, payment], :class => 'button purple button-mini', :data => {:confirm => t('shop.orders.payment_remove_confirmation') }, :method => :delete
+- else
+  %p.notice= t('shop.orders.no_payments')

@@ -1,0 +1,45 @@
+- @page_title = "#{t('shop.orders.despatch_note.order_number')} #{@order.number}"
+
+.despatchNote
+  %header
+    %h1= shop.settings.store_name
+    %h2= t("shop.orders.despatch_note.despatch_note")
+  .address
+    %p.name= @order.delivery_name
+    %p= @order.delivery_address1
+    %p= @order.delivery_address2
+    %p= @order.delivery_address3
+    %p= @order.delivery_address4
+    %p= @order.delivery_postcode
+    %p= @order.delivery_country.try(:name)
+
+  %table.details
+    %tr
+      %th= t("shop.orders.despatch_note.order_number")
+      %th= t("shop.orders.despatch_note.order_placed")
+      %th= t("shop.orders.despatch_note.total_weight")
+      %th= t("shop.orders.despatch_note.telephone")
+    %tr
+      %td= @order.number
+      %td= @order.received? ? @order.received_at.to_s(:long) : 'n/a'
+      %td= number_to_weight @order.total_weight
+      %td= @order.phone_number
+
+  %table.items
+    %thead
+      %tr
+        %th= t("shop.orders.despatch_note.quantity")
+        %th= t("shop.orders.despatch_note.product")
+        %th= t("shop.orders.despatch_note.sku")
+        %th= t("shop.orders.despatch_note.weight")
+        %th= t("shop.orders.despatch_note.packed?")
+    %tbody
+      - for item in @order.order_items
+        %tr
+          %td= item.quantity
+          %td= item.ordered_item.full_name
+          %td= item.ordered_item.sku
+          %td= number_to_weight item.weight
+          %td.check
+
+  %p.footer= t('shop.orders.despatch_note.footer', :default => "Thank you for your order!")

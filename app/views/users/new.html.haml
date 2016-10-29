@@ -1,0 +1,7 @@
+- @page_title = t('shop.users.users')
+
+= content_for :header do
+  %p.buttons= link_to t('shop.users.back_to_users'), :users, :class => 'button'
+  %h2.users= t('shop.users.users')
+
+= render 'form'

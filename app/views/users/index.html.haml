@@ -1,0 +1,17 @@
+- @page_title = t('shop.users.users')
+
+= content_for :header do
+  %p.buttons= link_to t('shop.users.new_user'), :new_user, :class => 'button green'
+  %h2.users= t('shop.users.users')
+
+.table
+  %table.data
+    %thead
+      %tr
+        %th= t('shop.users.name')
+        %th= t('shop.users.email')
+    %tbody
+      - for user in @users
+        %tr
+          %td= link_to user.full_name, [:edit, user]
+          %td= user.email_address
